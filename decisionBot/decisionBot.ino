@@ -1,50 +1,42 @@
-#define think 7
-#define arrow 8
-#define thinking 9
-#define yes 10
-#define maybe 11
-#define no 12
+#include <Servo.h>
+#define THINK 180
+#define YES 135
+#define MAYBE 90
+#define NO 45
+#define arrow 9
+#define button 8
 
-
+Servo motor;
 void setup() {
   // put your setup code here, to run once:
-  pinMode(yes, OUTPUT);
-  pinMode(no, OUTPUT);
-  pinMode(maybe, OUTPUT);
-  pinMode(thinking, OUTPUT);
-  pinMode(think, INPUT_PULLUP);
-  Serial.begin(115200);
   randomSeed(analogRead(0));
+  motor.attach(arrow);
+  motor.write(YES);
+  pinMode(button, INPUT_PULLUP);
+  Serial.begin(115200);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  bool buttonState = digitalRead(think);
+  bool buttonState = digitalRead(button);
   int result = 0;
   if (!buttonState) {
-    digitalWrite(yes, 0);
-    digitalWrite(maybe, 0);
-    digitalWrite(no, 0);
-    digitalWrite(thinking, 1);
     Serial.print("ThinkAction ");
+    motor.write(THINK);
     result = thinkAction();
     Serial.print(" - ");
     Serial.print(result);
     Serial.println(" ");    
   }
   if (result == 1) {
-    digitalWrite(yes, !buttonState);
-    Serial.print("yes");
+    yes();
   }
   else if (result == 2) {
-    digitalWrite(maybe, !buttonState);
-    Serial.print("maybe");
+    maybe();
   }
   else if (result == 3) {
-    digitalWrite(no, !buttonState);
-    Serial.print("no");
+    no();
   }
-  digitalWrite(thinking, !buttonState);
 }
 
 int thinkAction() {
@@ -53,6 +45,25 @@ int thinkAction() {
   return number;
 }
 
+void thinking() {
+  motor.write(THINK);
+  Serial.print("thinking");
+}
+
+void yes() {
+  motor.write(YES);
+  Serial.print("yes");
+}
+
+void maybe() {
+  motor.write(MAYBE);
+  Serial.print("maybe");
+}
+
+void no() {
+  motor.write(NO);
+  Serial.print("no");
+}
 
 int biasedRandom() {
   long number = random(0, 10);
