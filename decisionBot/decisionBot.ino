@@ -26,7 +26,7 @@ void loop() {
     result = thinkAction();
     Serial.print(" - ");
     Serial.print(result);
-    Serial.println(" ");    
+    Serial.print(" - ");    
   }
   if (result == 1) {
     yes();
@@ -47,22 +47,22 @@ int thinkAction() {
 
 void thinking() {
   motor.write(THINK);
-  Serial.print("thinking");
+  Serial.print("thinking - ");
 }
 
 void yes() {
   motor.write(YES);
-  Serial.print("yes");
+  Serial.println("yes");
 }
 
 void maybe() {
   motor.write(MAYBE);
-  Serial.print("maybe");
+  Serial.println("maybe");
 }
 
 void no() {
   motor.write(NO);
-  Serial.print("no");
+  Serial.println("no");
 }
 
 int biasedRandom() {
