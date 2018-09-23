@@ -1,3 +1,9 @@
+/*
+2018 Daniel Ricart Sanchez
+Code for testing that the button works.
+When the button is pressed the builtin LED lights.
+*/
+
 #define button 8
 
 void setup() {
