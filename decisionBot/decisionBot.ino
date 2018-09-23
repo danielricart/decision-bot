@@ -1,24 +1,27 @@
 #include <Servo.h>
-#define THINK 180
-#define YES 135
-#define MAYBE 90
-#define NO 45
-#define arrow 9
-#define button 8
 
-Servo motor;
+// Some alias that help us understand and read the code
+#define THINK 180   //angle of the "THINK" position
+#define YES 135     //angle of the "YES" position
+#define MAYBE 90    //angle of the "MAYBE" position
+#define NO 45       //angle of the "NO" position
+#define arrow 9     //port used for the motor controlling the arrow
+#define button 8    //port used for connecting the button
+
+Servo motor;        //motor represnetation
 void setup() {
   // put your setup code here, to run once:
-  randomSeed(analogRead(0));
-  motor.attach(arrow);
-  motor.write(YES);
-  pinMode(button, INPUT_PULLUP);
+  randomSeed(analogRead(0));    // improves random
+  motor.attach(arrow);          // setup the motor to the assigned port
+  motor.write(THINK);             // initialize the default position to thinking
+  pinMode(button, INPUT_PULLUP);//setup the button port in the special "button mode". makes connections easier and the readings are more reliable
+
   Serial.begin(115200);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  bool buttonState = digitalRead(button);
+  bool buttonState = digitalRead(button);   // save the state of the button in a variable
   int result = 0;
   if (!buttonState) {
     Serial.print("ThinkAction ");
