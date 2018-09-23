@@ -1,43 +1,51 @@
 #include <Servo.h>
 
-// Some alias that help us understand and read the code
-#define THINK 180   //angle of the "THINK" position
-#define YES 135     //angle of the "YES" position
-#define MAYBE 90    //angle of the "MAYBE" position
-#define NO 45       //angle of the "NO" position
+// Some alias that help us understand and read the code. Change de numbers here and the angles will change everywhere!
+#define THINK_ANGLE 180   //angle of the "THINK" position
+#define YES_ANGLE 135     //angle of the "YES" position
+#define MAYBE_ANGLE 90    //angle of the "MAYBE" position
+#define NO_ANGLE 45       //angle of the "NO" position
+
+//Assign a number of Pin from your Arduino board. You can change the number but you need to move your Arduino wires!
 #define arrow 9     //port used for the motor controlling the arrow
 #define button 8    //port used for connecting the button
 
-Servo motor;        //motor represnetation
+//assign values to different options. We'll use this later.
+#define YES 1
+#define MAYBE 2
+#define NO 3
+
+
+Servo motor;        //starts motor
 void setup() {
-  // put your setup code here, to run once:
-  randomSeed(analogRead(0));    // improves random
-  motor.attach(arrow);          // setup the motor to the assigned port
-  motor.write(THINK);             // initialize the default position to thinking
-  pinMode(button, INPUT_PULLUP);//setup the button port in the special "button mode". makes connections easier and the readings are more reliable
+  
+  randomSeed(analogRead(0));    // a seed improves the randomness by provding diferent values that will make your options less likely to repeat.
+  motor.attach(arrow);          // to move the arrow we need to connect it to the motor by adding the number of Pin that we defined before.
+  motor.write(THINK_ANGLE);     // moves your arrow to the starting position, Thinking.
+  pinMode(button, INPUT_PULLUP);//starts the button
 
   Serial.begin(115200);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  bool buttonState = digitalRead(button);   // save the state of the button in a variable
-  int result = 0;
+
+  bool buttonState = digitalRead(button);   // save the state of the button in a variable to know if you are pressing the button or not.
+  int thinkResult = 0;
   if (!buttonState) {
     Serial.print("ThinkAction ");
-    motor.write(THINK);
-    result = thinkAction();
+    motor.write(THINK_ANGLE);
+    thinkResult = thinkAction();
     Serial.print(" - ");
-    Serial.print(result);
+    Serial.print(thinkResult);
     Serial.print(" - ");    
   }
-  if (result == 1) {
+  if (thinkResult == YES) {
     yes();
   }
-  else if (result == 2) {
+  else if (thinkResult == MAYBE) {
     maybe();
   }
-  else if (result == 3) {
+  else if (thinkResult == NO) {
     no();
   }
 }
@@ -49,35 +57,34 @@ int thinkAction() {
 }
 
 void thinking() {
-  motor.write(THINK);
+  motor.write(THINK_ANGLE);
   Serial.print("thinking - ");
 }
 
 void yes() {
-  motor.write(YES);
+  motor.write(YES_ANGLE);
   Serial.println("yes");
 }
 
 void maybe() {
-  motor.write(MAYBE);
+  motor.write(MAYBE_ANGLE);
   Serial.println("maybe");
 }
 
 void no() {
-  motor.write(NO);
+  motor.write(NO_ANGLE);
   Serial.println("no");
 }
 
 int biasedRandom() {
+  //here you define how often each option will appear by creating a bias.
   long number = random(0, 10);
   Serial.print(number);
-  int result;
   if (number < 5) 
-    result = 1;
+    return YES;
   else if (number < 7)
-    result = 2;
+    return MAYBE;
   else
-    result = 3;
-  return result;
+    return NO;
 }
 
