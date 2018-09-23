@@ -1,5 +1,5 @@
 #include <Servo.h>
-#define MIN 25
+#define MIN 1
 #define MAX 180
 
 Servo myservo; 
