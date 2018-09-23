@@ -1,3 +1,7 @@
+/*
+Moves the motor to the last position 
+and move it back towards the position 0.
+*/
 #include <Servo.h>
 #define MIN 1
 #define MAX 180
@@ -7,7 +11,6 @@ int angle = 179;
 void setup() {
   // put your setup code here, to run once:
 Serial.begin(115200);
-pinMode(8, INPUT_PULLUP);
 myservo.attach(9);
 }
 

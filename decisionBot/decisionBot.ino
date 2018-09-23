@@ -78,7 +78,7 @@ void no() {
 
 int biasedRandom() {
   //here you define how often each option will appear by creating a bias.
-  long number = random(0, 10);
+  long number = random(0, 10); //create a new number from 0 to 10 (10 not included)
   Serial.print(number);
   if (number < 5) 
     return YES;
